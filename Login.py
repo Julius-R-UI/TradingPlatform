@@ -55,6 +55,9 @@ def password_checker(Inputted_Password,Password,key):
             time.sleep(3)
             os.system('clear')
         return 0
+    else:
+        if Inputted_Password == str(Password):
+            return 1
 
 def UsernameInput(DoestheUsernameExist, iterator):
     while DoestheUsernameExist == 0:
@@ -103,3 +106,5 @@ while IsthepasswrdCorrect != 1:
     used_key = Fernet(key[f])
     IsthepasswrdCorrect = password_checker(Inputted_Password,Password,used_key)
     f = f + 1
+os.system('clear')
+print("Login Successful")
