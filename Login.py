@@ -108,3 +108,8 @@ while IsthepasswrdCorrect != 1:
     f = f + 1
 os.system('clear')
 print("Login Successful")
+AllUsers = [row[0] for row in Data]
+Userloggedin = AllUsers[i]
+with open('usercurrentlyloggedin.txt', 'w') as f:
+    f.write('\n')
+    f.write(Userloggedin)

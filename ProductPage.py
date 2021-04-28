@@ -74,6 +74,7 @@ def buyingProducts(user,Product, Data):
             productIDvalid = 1
     print("Is this the chosen product: ")
     ChosenProduct = Product[productID]
+    print(ChosenProduct[0] + " sold by "+ ChosenProduct[3] + " for " + ChosenProduct[1])
     answer = str(raw_input("[y]es [n]o: "))
     if answer =='y':
         os.system('clear')
@@ -82,20 +83,22 @@ def buyingProducts(user,Product, Data):
         if transaction_continue == "y":
             os.system('clear')
             Seller = Product[productID][3]
-            iterator = 0
-            for i in Data:
-                if Data[iterator] == str(Seller):
-                    SellerPosition = iterator
-                    print(SellerPosition)
-                    break
-                iterator = iterator + 1
+            x = [row[0] for row in Data]
+            SellerPosition = x.index(Seller)
+            BuyerPosition = x.index(user)
             
-            '''
-            Data[SellerPosition][0] = float(Data[SellerPosition][2]) + float(ChosenProduct[1])
-            writer.writerows(Data)
+            if float(Data[BuyerPosition][2]) - float(ChosenProduct[1]) < 0:
+                print("Insufficient funds")
+                return 0
+
+            Data[SellerPosition][2] = float(Data[SellerPosition][2]) + float(ChosenProduct[1])
+            Data[BuyerPosition][2] = float(Data[BuyerPosition][2]) - float(ChosenProduct[1])
+            Product[productID][2] = float(Product[productID][2]) - 1
+ 
             writer = csv.writer(open('Data.csv', 'w'))
             writer.writerows(Data)
-            '''
+            writer = csv.writer(open('product.csv', 'w'))
+            writer.writerows(Product)
 
             print("Transaction complete")
     elif answer == 'n':
@@ -132,11 +135,14 @@ def showingProducts(BuyorSellCorrect):
 
 
 BuyOrSell = showingProducts(BuyorSellCorrect)
+with open('usercurrentlyloggedin.txt') as f:
+    for line in f:
+        pass
+    last_line = line
 
+user = last_line
 if BuyOrSell == "s":
-    user = "Root"
     SellingProduct(user, 0)
 if BuyOrSell == "b":
-    user = "Root"
     buyingProducts(user,Products, Data)
     
